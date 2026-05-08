@@ -14,21 +14,18 @@ client = discord.Client(intents=intents)
 
 @client.event
 async def on_ready():
-    print(f"✅ Бот запущен как {client.user}")
-    print(f"Мониторит канал ID: {DISCORD_CHANNEL_ID}")
+    print(f"✅ БОТ УСПЕШНО ЗАПУЩЕН КАК {client.user}")
+    print(f"🎯 Мониторит канал: {DISCORD_CHANNEL_ID}")
 
 @client.event
 async def on_message(message):
-    print(f"📨 Получено сообщение из канала {message.channel.id}")  # для отладки
-    
-    if message.channel.id != DISCORD_CHANNEL_ID:
-        return
-    
-    print(f"✅ Сообщение из нужного канала! Текст: {message.content[:100]}...")  # для отладки
+    print(f"📨 Получено сообщение | Канал: {message.channel.id} | Автор: {message.author} | Текст: {message.content[:100]}")
 
-    if "TikTok" not in message.content:
-        print("❌ Нет слова TikTok — пропускаем")
+    if message.channel.id != DISCORD_CHANNEL_ID:
+        print("   → Пропущено: другой канал")
         return
+
+    print("   → Это наш канал! Готовим отправку...")
 
     text = f"""🚨 **Джонни в эфире!**
 
@@ -43,10 +40,12 @@ async def on_message(message):
                 "parse_mode": "Markdown"
             }
             async with session.post(url, json=payload) as resp:
-                print(f"📤 Telegram ответил кодом: {resp.status}")
+                print(f"   → Telegram ответил: {resp.status}")
                 if resp.status != 200:
                     print(await resp.text())
     except Exception as e:
-        print(f"❌ Ошибка отправки: {e}")
+        print(f"   ❌ Ошибка отправки: {e}")
+
+    print("   → Обработка сообщения завершена\n")
 
 client.run(DISCORD_TOKEN)
