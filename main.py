@@ -2,6 +2,9 @@ import discord
 import aiohttp
 import os
 
+import discord
+discord.abc.ABC = discord.abc.ABC  # фикс для новых версий
+
 # ================== НАСТРОЙКИ ==================
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
